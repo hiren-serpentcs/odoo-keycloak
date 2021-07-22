@@ -9,18 +9,14 @@ class OAuthProvider(models.Model):
     client_secret = fields.Char()
     users_endpoint = fields.Char(
         help='User endpoint',
-        placeholder='http://keycloak.mycompany.com'
-                    '/auth/admin/realms/{realm}/users',
         required=False,
     )
     superuser = fields.Char(
         help='A super power user that is able to CRUD users on KC.',
-        placeholder='admin',
         required=False,
     )
     superuser_pwd = fields.Char(
         help='"Superuser" user password',
-        placeholder='I hope is not "admin"',
         required=False,
     )
     users_management_enabled = fields.Boolean(
@@ -41,12 +37,3 @@ class OAuthProvider(models.Model):
                 item.superuser,
                 item.superuser_pwd,
             ])
-
-    @api.model
-    def _sync_users(self):
-        sync_wiz = self.env["auth.keycloak.sync.wiz"]
-        provider_id = self.env.ref("auth_keycloak.default_keycloak_provider").id
-        sync_wiz.create({
-            "provider_id": provider_id,
-            "login_match_key": "username:login"
-        }).button_sync()

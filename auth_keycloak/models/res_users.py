@@ -46,8 +46,7 @@ class ResUsers(models.Model):
         validation['user_id'] = validation['sub']
         return validation
 
-    @api.multi
-    def button_push_to_keycloak(self, vals):
+    def button_push_to_keycloak(self):
         """Quick action to push current users to Keycloak."""
         provider = self.env.ref(
             'auth_keycloak.default_keycloak_provider',
